@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Room</title>
+  </head>
+  <body>
+    <center>
+      <h1>Messages</h1>
+      <h2>Room Id : <span id="room_id"></span></h2>
+      <h2>Username : <span id="username"></span></h2>
+    </center>
+    <div style="margin: 50px" id="container">
+      <input type="text" id="message" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+      var container = document.getElementById("container");
+      const urlParams = new URLSearchParams(window.location.search);
+      const room_id = urlParams.get("room");
+      const username = urlParams.get("username");
+      document.getElementById("room_id").innerHTML = room_id;
+      document.getElementById("username").innerHTML = username;
+      var ws = new WebSocket(`ws://localhost:8000/ws/${room_id}/${username}`);
+      ws.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        container.innerHTML += `<div
+        style="
+          background-color: antiquewhite;
+          width: fit-content;
+          padding: 20px;
+          padding-right: 50px;
+          padding-left: 50px;
+          border-radius: 20px;
+          margin-top: 20px;
+        "
+      >
+        <span
+          style="text-decoration: underline; font-size: 12px; font-weight: 800"
+          >${data.user}</span
+        ><br />
+        <span style="font-weight: 500; margin-left: 10px">${data.message}</span>
+      </div>`;
+      };
+
+      function sendMessage() {
+        var message = document.getElementById("message");
+        ws.send(message.value);
+        message.value = "";
+      }
+    </script>
+  </body>
+</html>

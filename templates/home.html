@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <center>
+        <h1 style="text-decoration: underline;">Create Or Join A Room</h1>
+        <form id="room-form">
+            Room ID : <input type="text" id="room" required><br><br>
+            Username : <input type="text" id="username" required><br><br>
+            <button>Create Or Enter</button>
+        </form>
+    </center>
+    <script>
+        document.getElementById("room-form").addEventListener("submit", (e) => {
+            room = document.getElementById("room").value
+            username = document.getElementById("username").value
+            window.location.href = `room.html?room=${room}&username=${username}`
+            e.preventDefault()
+        })
+    </script>
+</body>
+</html>
